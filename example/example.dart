@@ -53,7 +53,7 @@ runPubServer(String baseDir, String host, int port, bool standalone) {
 
   return shelf_io.serve(
       const Pipeline()
-          .addMiddleware(logRequests())
+          .addMiddleware(logRequests(logger: logHandler))
           .addHandler(server.requestHandler),
       host,
       port);
@@ -78,4 +78,23 @@ void setupLogger() {
     var tail = record.stackTrace != null ? '\n${record.stackTrace}' : '';
     print('$head ${record.message} $tail');
   });
+}
+
+void logHandler(String msg, bool isError) {
+  DateTime date = DateTime.now();
+  int year = date.year;
+  int month = date.month;
+  int day = date.day;
+  File file;
+  if (isError) {
+    file = File('/data/logs/flutter/common-error-log-${year}-${month}-${day}');
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
+    print('[ERROR] $msg');
+  } else {
+    file = File('/data/logs/flutter/common-log-${year}-${month}-${day}');
+    print(msg);
+  }
+  file.writeAsStringSync('\n${msg}', mode: FileMode.append);
 }
