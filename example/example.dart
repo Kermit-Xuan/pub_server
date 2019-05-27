@@ -63,9 +63,9 @@ ArgParser argsParser() {
   var parser = ArgParser();
 
   parser.addOption('directory',
-      abbr: 'd', defaultsTo: 'pub_server-repository-data');
+      abbr: 'd', defaultsTo: '/home/work/.pub-packages');
 
-  parser.addOption('host', abbr: 'h', defaultsTo: 'localhost');
+  parser.addOption('host', abbr: 'h', defaultsTo: '0.0.0.0');
 
   parser.addOption('port', abbr: 'p', defaultsTo: '8080');
   parser.addFlag('standalone', abbr: 's', defaultsTo: false);
